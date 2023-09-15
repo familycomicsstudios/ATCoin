@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if session['username'] is defined %}
+<p>Hello, {{ session['username'] }}!</p>
+{% for key, value in balances.items() %}
+{% if value > 0 %}
+<p>{{ key }}: {{ value }}</p>
+{% endif %}
+{% endfor %}
+<p></p>
+<a href="/authcode" class="btn btn-primary">Authorize</a><a href="/pay/{{ username }}" class="btn btn-primary">Get Pay Link</a><br>
+<h2>Stats</h2>
+<p>Time until next block: {{ time }}<br>
+Current mining reward: {{ pool/2 }}</p>
+{% else %}
+<p>You are not logged in!</p>
+{% endif %}
+<h2>Get User Balance</h2>
+<input type="text" id="text" value="The_Mad_Punter"/>
+<input type="text" id="token1" value="ATC"/>
+<input type="button" id="btn" class="btn btn-primary" value="Search" onClick="javascript: window.open('/balance/' + document.getElementById('text').value + '/' + document.getElementById('token1').value + '/','_self');" />
+<h2>Send ATCoins</h2>
+<h4>Send To</h4>
+<input type="text" id="sendTo" value="The_Mad_Punter"/><br>
+<input type="text" id="token2" value="ATC"/><br>
+<h4>Amount to Send</h4>
+<input type="text" id="amount" value="1"/>
+<input type="button" id="btn" class="btn btn-primary" value="Send" onClick="javascript: window.open('/send/' + document.getElementById('sendTo').value + '/' + document.getElementById('amount').value + '/' + document.getElementById('token2').value + '/','_self');" /><br>
+<h2>Mine</h2>
+<button class="btn btn-primary "><a class="btnlink" color="white" text-decoration="none" href="/mine/" >Mine</a></button>
+<h2>Burn ATCoins</h2>
+<input type="text" id="token3" value="ATC"/><br>
+<h4>Amount to Burn</h4>
+<input type="text" id="amount2" value="1"/>
+<input type="button" id="btn" class="btn btn-primary" value="Burn" onClick="javascript: window.open('/burn/' +  document.getElementById('amount2').value + '/' + document.getElementById('token3').value + '/','_self');" /><br>
+<h2>Log In with Code</h2>
+<input type="text" id="textCode" value=""/>
+<input type="button" id="btn" class="btn btn-primary" value="Authenticate" onClick="javascript: window.open('/logCode/' + document.getElementById('textCode').value + '/','_self');" /><br>
+<h2>Download ATCoin Core</h2>
+<button class="btn btn-primary "><a class="btnlink" color="white" text-decoration="none" href="/static/ATCoin.apk" >Download for Android</a></button>
+<button class="btn btn-primary "><a class="btnlink" color="white" text-decoration="none" href="/static/download.html" >Download for Web</a></button>
+<h2>Scan QR Code</h2>
+<button class="btn btn-primary "><a class="btnlink" color="white" text-decoration="none" href="/qr/" >Scan Code</a></button>
+{% endblock %}

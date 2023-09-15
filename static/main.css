@@ -1,0 +1,62 @@
+.topbar {
+    float:right;
+    display:inline-block;
+    display: flex;
+    vertical-align:center;
+}
+.topbalr {
+    float:left;
+    display:inline-block;
+    display: flex;
+    vertical-align:top;
+}
+.title {
+    display:inline-block;
+}
+body {
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+header {
+    border-bottom: 1px solid #999;
+    margin-bottom: 2rem;
+}
+.btn {
+    margin-right: 2px;
+    margin-left: 2px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.qr-code {
+      max-width: 200px;
+      margin: 10px;
+}
+.btnlink {
+    color: white;
+    text-decoration: none;
+}
+.nodeco {
+    text-decoration: none;
+    color: black;
+}
+h1 {
+  font-size: 5.5vh;
+}
+h2 {
+  font-size: 4.0vh;
+}
+h3 {
+  font-size: 3.5vh;
+}
+h4 {
+    font-size: 3.0vh;
+}
+p {
+  font-size: 2.5vh;
+}
+.logo {
+    width: 100px;
+    height: 100px;
+}

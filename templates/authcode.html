@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Authorize</h2>
+        <p>
+            Your code is {{ code }}. Use this for the API.
+        </p>
+        <p>
+    /api/v1/auth/[code]/<br>
+    /api/v1/balance/[username]/<br>
+    /api/v1/send/[sendto]/[amount]/<br>
+    /api/v1/mine<br>
+    Use ?auth parameter with your authcode to authenticate as a user.
+</p>
+<img src=
+"https://chart.googleapis.com/chart?cht=qr&chl=https://atcoin.themadpunter.repl.co/logCode/{{ code }}/&chs=160x160&chld=L|0"
+        class="qr-code img-thumbnail img-responsive" />
+        <div class="g-recaptcha" data-sitekey="6LcRx1wnAAAAAJW65fUQqmQMfP7xPqVeRnno72Z0"></div>
+{% endblock %}

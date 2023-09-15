@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Send ATCoins to {{ payee }}</h1>
+{% if session['username'] is defined %}
+<p>
+    Sending as: {{ username }}<br>
+    You have {{ balance }} ATCoins.
+</p>
+{% else %}
+<p>You are not logged in!</p>
+{% endif %}
+
+<h4>Send To</h4>
+<input type="text" id="sendTo" value="The_Mad_Punter"/><br>
+<input type="text" id="token2" value="ATC"/><br>
+<h4>Amount to Send</h4>
+<input type="text" id="amount" value="1"/>
+<input type="button" id="btn" class="btn btn-primary" value="Send" onClick="javascript: window.open('/send/' + document.getElementById('sendTo').value + '/' + document.getElementById('amount').value + '/' + document.getElementById('token2').value + '/','_self');" /><br>
+<img src=
+"https://chart.googleapis.com/chart?cht=qr&chl=https://atcoin.themadpunter.repl.co/pay/{{ username }}/&chs=160x160&chld=L|0"
+        class="qr-code img-thumbnail img-responsive" /><br>
+{% endblock %}
