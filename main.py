@@ -105,7 +105,7 @@ def balance(username, token):
 
 @app.route('/api/v1/send/<sendto>/<amount>/<token>/')
 def send(sendto, amount, token):
-    if int(amount) < 0:
+    if float(amount) < 0:
         return "Nice try", 401
     if request.args.get("auth") != None:
         try:
@@ -211,7 +211,7 @@ def qr():
 
 @app.route('/api/v1/burn/<amount>/<token>/')
 def burn(amount, token):
-    if int(amount) < 0:
+    if float(amount) < 0:
         return "Nice try", 401
     if request.args.get("auth") != None:
         try:
@@ -241,6 +241,49 @@ def burnraw(amount, token):
         return render_template("isf.html", amount=amount)
     elif response == "Nice try":
         return redirect("https://shattereddisk.github.io/rickroll/rickroll.mp4")
+    else:
+        return render_template("notLoggedIn.html")
+
+@app.route('/api/v1/convert/<token>/<amount>/')
+def convert(amount, token):
+    if float(amount) < 0:
+        return "Nice try", 401
+    if request.args.get("auth") != None:
+        try:
+            
+            if code(request.args.get("auth")) == "":
+                return "Invalid code", 401
+            session["username"] = code(request.args.get("auth"))
+            
+        except:
+            return "Invalid code", 401
+    amount = float(amount)
+    try:
+        if _balance(session["username"], token) >= amount:
+            db["users"][session["username"].lower()][token] -= amount
+            if token == "ATC":
+                db["users"][session["username"].lower()]["CRSC"] += amount / 10
+                return "Done", 200, "CRSC"
+            if token == "CRSC":
+                db["users"][session["username"].lower()]["ATC"] += amount * 10
+                return "Done", 200, "ATC"
+            return "Cant convert", 401, ""
+        else:
+            return "Insufficient funds", 401, ""
+    except:
+        return "Not logged in", 401, ""
+
+@app.route("/convert/<token>/<amount>/")
+def convertraw(amount, token):
+    response, code, to = convert(amount, token)
+    if response == "Done":
+        return render_template("convertDone.html", amount=amount, token=token, to=to)
+    elif response == "Insufficient funds":
+        return render_template("isf.html", amount=amount)
+    elif response == "Nice try":
+        return redirect("https://shattereddisk.github.io/rickroll/rickroll.mp4")
+    elif response == "Nice try":
+        return render_template("cantConvert.html")
     else:
         return render_template("notLoggedIn.html")
 

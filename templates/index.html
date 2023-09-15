@@ -35,6 +35,16 @@ Current mining reward: {{ pool/2 }}</p>
 <h4>Amount to Burn</h4>
 <input type="text" id="amount2" value="1"/>
 <input type="button" id="btn" class="btn btn-primary" value="Burn" onClick="javascript: window.open('/burn/' +  document.getElementById('amount2').value + '/' + document.getElementById('token3').value + '/','_self');" /><br>
+<h2>Convert Coins</h2>
+<input type="text" id="token4" value="ATC"/><br>
+<h4>Amount to Convert</h4>
+<input type="text" id="amount3" value="1"/>
+<input type="button" id="btn" class="btn btn-primary" value="Convert" onClick="javascript: window.open('/convert/' +  document.getElementById('token4').value + '/' + document.getElementById('amount3').value + '/','_self');" /><br>
+<h3>Conversions Allowed</h3>
+<p>
+    10 ATC -> 1 CRSC<br>
+    1 CRSC -> 10 ATC
+</p>
 <h2>Log In with Code</h2>
 <input type="text" id="textCode" value=""/>
 <input type="button" id="btn" class="btn btn-primary" value="Authenticate" onClick="javascript: window.open('/logCode/' + document.getElementById('textCode').value + '/','_self');" /><br>
