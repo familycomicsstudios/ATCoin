@@ -4,11 +4,10 @@
 
 {% if session['username'] is defined %}
 <p>Hello, {{ session['username'] }}!</p>
-{% for key, value in balances.items() %}
-{% if value > 0 %}
-<p>{{ key }}: {{ value }}</p>
-{% endif %}
-{% endfor %}
+<p>ATC: {{ balances["ATC"] }}</p>
+<p>USDATC: {{ balances["USDATC"] }}</p>
+<p>ATV: {{ balances["ATV"] }}</p>
+
 <p></p>
 <a href="/authcode" class="btn btn-primary">Authorize</a><a href="/pay/{{ username }}" class="btn btn-primary">Get Pay Link</a><br>
 <h2>Stats</h2>
@@ -42,9 +41,11 @@ Current mining reward: {{ pool/2 }}</p>
 <input type="button" id="btn" class="btn btn-primary" value="Convert" onClick="javascript: window.open('/convert/' +  document.getElementById('token4').value + '/' + document.getElementById('amount3').value + '/','_self');" /><br>
 <h3>Conversions Allowed</h3>
 <p>
-    10 ATC -> 1 CRSC<br>
     1 CRSC -> 10 ATC
 </p>
+<h2>Get User Balances</h2>
+<input type="text" id="text2" value="The_Mad_Punter"/>
+<input type="button" id="btn" class="btn btn-primary" value="Search" onClick="javascript: window.open('/balances/' + document.getElementById('text2').value + '/','_self');" />
 <h2>Log In with Code</h2>
 <input type="text" id="textCode" value=""/>
 <input type="button" id="btn" class="btn btn-primary" value="Authenticate" onClick="javascript: window.open('/logCode/' + document.getElementById('textCode').value + '/','_self');" /><br>

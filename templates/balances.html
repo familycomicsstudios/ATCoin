@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Balances</h2>
+{% for key, value in balances.items() %}
+{% if value > 0 %}
+<p>{{ key }}: {{ value }}</p>
+{% endif %}
+{% endfor %}
+{% endblock %}

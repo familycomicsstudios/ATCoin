@@ -99,6 +99,17 @@ def _balance(username, token):
         db["users"][username.lower()][token] = 0
         return db["users"][username.lower()][token]
 
+def _balances(username):
+    try:
+        db["users"][username.lower()]["Testcoin"] = 1
+    except:
+        db["users"][username.lower()] = {}
+    try:
+        return db["users"][username.lower()]
+    except:
+        db["users"][username.lower()] = {}
+        return db["users"][username.lower()]
+
 @app.route('/api/v1/balance/<username>/<token>/')
 def balance(username, token):
     return str(_balance(username, token))
@@ -260,11 +271,8 @@ def convert(amount, token):
     amount = float(amount)
     try:
         if _balance(session["username"], token) >= amount:
-            db["users"][session["username"].lower()][token] -= amount
-            if token == "ATC":
-                db["users"][session["username"].lower()]["CRSC"] += amount / 10
-                return "Done", 200, "CRSC"
             if token == "CRSC":
+                db["users"][session["username"].lower()][token] -= amount
                 db["users"][session["username"].lower()]["ATC"] += amount * 10
                 return "Done", 200, "ATC"
             return "Cant convert", 401, ""
@@ -282,12 +290,18 @@ def convertraw(amount, token):
         return render_template("isf.html", amount=amount)
     elif response == "Nice try":
         return redirect("https://shattereddisk.github.io/rickroll/rickroll.mp4")
-    elif response == "Nice try":
+    elif response == "Cant convert":
         return render_template("cantConvert.html")
     else:
         return render_template("notLoggedIn.html")
 
+@app.route("/api/v1/balance/<user>/")
+def balances(user):
+    return str(_balances(user).value)
 
+@app.route("/balances/<user>/")
+def balancesraw(user):
+    return render_template("balances.html", balances=_balances(user).value)
 # CORS Headers
 @app.after_request
 def after_request(response):
