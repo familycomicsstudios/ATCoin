@@ -2,5 +2,9 @@
 
 {% block content %}
 <h2>Mining Rewards</h2>
-You mined {{ amount }} ATCoins!
+{% for currency, amount in amounts.items() %}
+{% if amount > 0 %}
+<p>Mined {{ currency }}: {{ amount }}.</p>
+{% endif %}
+{% endfor %}
 {% endblock %}

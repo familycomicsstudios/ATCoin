@@ -6,13 +6,20 @@
 <p>Hello, {{ session['username'] }}!</p>
 <p>ATC: {{ balances["ATC"] }}</p>
 <p>USDATC: {{ balances["USDATC"] }}</p>
+<p>CRSC: {{ balances["CRSC"] }}</p>
 <p>ATV: {{ balances["ATV"] }}</p>
 
 <p></p>
-<a href="/authcode" class="btn btn-primary">Authorize</a><a href="/pay/{{ username }}" class="btn btn-primary">Get Pay Link</a><br>
+<a href="/authcode" class="btn btn-primary">Authorize</a><a href="/pay/{{ username }}" class="btn btn-primary">Get Pay Link</a>
+<a href="/balances/{{ session['username'] }}/" class="btn btn-primary">Portfolio</a><br>
 <h2>Stats</h2>
-<p>Time until next block: {{ time }}<br>
-Current mining reward: {{ pool/2 }}</p>
+<p>Time until next block: {{ time }}<br></p>
+<h3>Mining Rewards</h3>
+{% for currency, amount in pool.items() %}
+{% if amount > 0 %}
+<p>{{ currency }}: {{ amount }}</p>
+{% endif %}
+{% endfor %}
 {% else %}
 <p>You are not logged in!</p>
 {% endif %}
@@ -35,13 +42,17 @@ Current mining reward: {{ pool/2 }}</p>
 <input type="text" id="amount2" value="1"/>
 <input type="button" id="btn" class="btn btn-primary" value="Burn" onClick="javascript: window.open('/burn/' +  document.getElementById('amount2').value + '/' + document.getElementById('token3').value + '/','_self');" /><br>
 <h2>Convert Coins</h2>
+<h4>To</h4>
 <input type="text" id="token4" value="ATC"/><br>
+<h4>From</h4>
+<input type="text" id="token5" value="ATV"/><br>
 <h4>Amount to Convert</h4>
 <input type="text" id="amount3" value="1"/>
-<input type="button" id="btn" class="btn btn-primary" value="Convert" onClick="javascript: window.open('/convert/' +  document.getElementById('token4').value + '/' + document.getElementById('amount3').value + '/','_self');" /><br>
+<input type="button" id="btn" class="btn btn-primary" value="Convert" onClick="javascript: window.open('/convert/' +  document.getElementById('token4').value + '/' +  document.getElementById('token5').value + '/'+ document.getElementById('amount3').value + '/','_self');" /><br>
 <h3>Conversions Allowed</h3>
 <p>
-    1 CRSC -> 10 ATC
+    1 CRSC -> 10 ATC<br>
+    100 ATC -> 1 ATV
 </p>
 <h2>Get User Balances</h2>
 <input type="text" id="text2" value="The_Mad_Punter"/>
@@ -54,4 +65,20 @@ Current mining reward: {{ pool/2 }}</p>
 <button class="btn btn-primary "><a class="btnlink" color="white" text-decoration="none" href="/static/download.html" >Download for Web</a></button>
 <h2>Scan QR Code</h2>
 <button class="btn btn-primary "><a class="btnlink" color="white" text-decoration="none" href="/qr/" >Scan Code</a></button>
+<h1>API</h1>
+<h2>Endpoints:</h2>
+<ul>
+    <li>/api/v1/auth/[code]/</li>
+    <li>/api/v1/balance/[username]/[token]/</li>       <li>/api/v1/send/[sendto]/[amount]/[token]/</li>
+    <li>/api/v1/mine/</li>
+    <li>/api/v1/wallet/[username]/</li>
+    <li>/api/v1/burn/[amount]/[token]/</li>
+    <li>/api/v1/convert/[token]/[convertto]/[amount]/</li>
+    <li>/api/v1/balance/[user]</li>
+    <li>/api/v1/token/info/[token]/</li>
+    <li>/api/v1/token/create/</li>
+</ul>
+<p>Token creation: args are metadata. ?amount is amount to mint, ?name is token name, ?symbol is token symbol.</p>
+<p>Most API endpoints require login. You can login with a authentication code using ?code=[code].</p>
+<p>Use internal token ID, not symbol. The token ID is shown on the /balances/[username]/ page after the symbol.</p>
 {% endblock %}

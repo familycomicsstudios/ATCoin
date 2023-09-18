@@ -4,7 +4,7 @@
 <h2>Balances</h2>
 {% for key, value in balances.items() %}
 {% if value > 0 %}
-<p>{{ key }}: {{ value }}</p>
+<p>{{ tokens[key]['symbol'] }} ({{ key }}): {{ value }}</p>
 {% endif %}
 {% endfor %}
 {% endblock %}
