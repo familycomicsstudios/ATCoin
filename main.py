@@ -26,7 +26,7 @@ db["tokens"]["USDATC"] = {
     "symbol": "USDATC"
 }
 db["tokens"]["ATV"] = {"amount": 0, "name": "ATCoin Vote", "symbol": "ATV"}
-
+db["tokens"]["BLOCKBIT"] = {"amount": 0, "name": "Blockbit", "symbol": "BLOCKBIT"}
 
 @app.get("/login/")
 def login():
@@ -75,7 +75,7 @@ def main_login_page():
             "pool":
             db["pool"],
             "balances":
-            db["users"][session["username"].lower()].value
+            db["users"][session["username"].lower()].value, "mintable": db["mintable"]
         }
     except:
         params = {
@@ -193,7 +193,11 @@ def mine():
             for token in db["pool"].value:
                 db["users"][username][token] = _balance(
                     username, token) + db["pool"][token]
-            db["pool"] = {"ATC": 1, "ATV": 1}
+            db["pool"] = {}
+            for key, item in db["mintable"].items():
+                if item[0] > 0:
+                    db["pool"][key] = item[1] 
+                    db["mintable"][key][0] -= item[1]
             db["mined"] = []
             db["lastReset"] = time.time()
         if not username in db["mined"]:
@@ -434,6 +438,9 @@ def createtoken():
     except:
         return "Invalid request", 401
 
+@app.route("/vote/")
+def vote():
+    return render_template("vote.html")
 
 # CORS Headers
 @app.after_request

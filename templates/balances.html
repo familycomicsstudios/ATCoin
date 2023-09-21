@@ -5,6 +5,9 @@
 {% for key, value in balances.items() %}
 {% if value > 0 %}
 <p>{{ tokens[key]['symbol'] }} ({{ key }}): {{ value }}</p>
+{% if tokens[key]['url'] is defined %}
+<img src="{{ tokens[key]['url'] }}"/>
+{% endif %}
 {% endif %}
 {% endfor %}
 {% endblock %}
