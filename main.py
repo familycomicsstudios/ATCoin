@@ -276,6 +276,7 @@ def newWallet(username):
     uname = username
     if not "." + uname in db["authCodes"].values():
         db["authCodes"][code] = "." + str(uname)
+        session["username"] = "." + str(uname)
         return str(code)
     else:
         return "Taken"
@@ -445,6 +446,13 @@ def vote():
 # CORS Headers
 @app.after_request
 def after_request(response):
+    try:
+        if not session["username"] in db["traffic"]:
+            db["traffic"][session["username"]] = 1
+        else:
+            db["traffic"][session["username"]] += 1
+    except:
+        pass
     response.headers.add('Access-Control-Allow-Headers',
                          'Content-Type,Authorization,true')
     response.headers.add('Access-Control-Allow-Methods',
