@@ -169,6 +169,7 @@ def send(sendto, amount, token):
             db["users"][session["username"].lower()][token] -= amount
             db["users"][sendto.lower()][token] = _balance(sendto,
                                                           token) + amount
+            db["transactions"].append({"type":"transaction","sendto":sendto, "from": session["username"], "amount": amount, "token":token})
             return "Done", 200
         else:
             return "Insufficient funds", 401
@@ -206,7 +207,7 @@ def mine():
                 db["users"][username][token] = _balance(
                     username, token) + db["pool"][token] / 2
                 db["pool"][token] = db["pool"][token] / 2
-
+                db["transactions"].append({"type":"mine","from":session["username"]})
             return balances(username), 200
         else:
             return "Already mined", 401
@@ -304,6 +305,7 @@ def burn(amount, token):
     try:
         if _balance(session["username"], token) >= amount:
             db["users"][session["username"].lower()][token] -= amount
+            db["transactions"].append({"type":"burn","from":session["username"], "amount":amount, "token":token})
             return "Done", 200
         else:
             return "Insufficient funds", 401
@@ -442,6 +444,8 @@ def createtoken():
 @app.route("/vote/")
 def vote():
     return render_template("vote.html")
+
+
 
 # CORS Headers
 @app.after_request
