@@ -445,7 +445,23 @@ def createtoken():
 def vote():
     return render_template("vote.html")
 
+@app.route("/api/v1/transaction/<id>/")
+def getTransaction(id):
+    try:
+        return str(db["transactions"][int(id)].value)
+    except:
+        return "Invalid"
 
+@app.route("/api/v1/transactions/<start>/<end>/")
+def getTransactions(start, end):
+    try:
+        transactions = db["transactions"][int(start):int(end)]
+        newTransactions = []
+        for trans in transactions:
+            newTransactions.append(trans.value)
+        return str(newTransactions)
+    except SyntaxError:
+        return "Invalid"
 
 # CORS Headers
 @app.after_request
